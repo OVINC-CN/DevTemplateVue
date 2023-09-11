@@ -11,7 +11,7 @@ export default defineConfig({
       SITE_URL: process.env.SITE_URL,
       OVINC_URL: process.env.OVINC_URL,
       OVINC_WEB_URL: process.env.OVINC_WEB_URL,
-    }
+    },
   },
   base: '/',
   publicDir: 'public',
@@ -20,7 +20,7 @@ export default defineConfig({
     port: 8081,
     https: {
       key: './.certs/key',
-      cert: './.certs/pem'
+      cert: './.certs/pem',
     },
   },
   css: {

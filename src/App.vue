@@ -41,7 +41,23 @@
                   </a-doption>
                 </template>
               </a-dropdown>
-              <user-avatar />
+              <a-dropdown @select="handlerUserDropDown">
+                <a-button
+                  type="text"
+                  style="padding: 0; color: unset"
+                >
+                  {{ user.nick_name }}
+                </a-button>
+                <template #content>
+                  <a-doption
+                    v-for="item in userDropDown"
+                    :key="item.value"
+                    :value="item.value"
+                  >
+                    {{ item.name }}
+                  </a-doption>
+                </template>
+              </a-dropdown>
             </a-space>
           </div>
         </a-layout-header>
@@ -61,12 +77,12 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { locale, langOption, changeLangAndReload } from './locale'
 import { useI18n } from 'vue-i18n'
 import { useRoute, useRouter } from 'vue-router'
-import UserAvatar from './components/UserAvatar.vue'
+import { signOutAPI } from './api/user'
 
 // locale
 const i18n = useI18n()
@@ -101,7 +117,20 @@ const currentYear = ref(new Date().getFullYear())
 const store = useStore()
 const mainLoading = computed(() => store.state.mainLoading)
 store.dispatch('getUserInfo')
-onMounted(() => store.dispatch('setMainLoading', false))
+
+// user
+const userDropDown = ref([
+  {
+    name: i18n.t('Logout'),
+    value: 'logout'
+  }
+])
+const user = computed(() => store.state.user)
+const handlerUserDropDown = (key) => {
+  if (key === 'logout') {
+    signOutAPI().finally(() => window.location.reload())
+  }
+}
 </script>
 
 <style>

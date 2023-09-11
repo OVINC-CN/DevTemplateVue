@@ -1,10 +1,10 @@
 import { createStore } from 'vuex';
-import { getUserInfoAPI, listUserPropertyAPI } from '../api/user'
+import { getUserInfoAPI } from '../api/user'
 
 const store = createStore({
   state() {
     return {
-      mainLoading: true,
+      mainLoading: false,
       isLogin: false,
       user: {
         username: '',
@@ -47,23 +47,14 @@ const store = createStore({
         }, 600);
       }
     },
-    getUserInfo({ commit, dispatch }) {
+    getUserInfo({ commit }) {
       getUserInfoAPI().then(
         res => {
           commit('setUser', res.data);
           commit('setIsLogin', true);
-          dispatch('getUserProperty')
         }
       );
     },
-    getUserProperty({ commit }) {
-      listUserPropertyAPI().then(
-        res => {
-          commit('setUserPropertyRaw', res.data)
-          commit('setUserProperty', res.data)
-        }
-      )
-    }
   },
 });
 

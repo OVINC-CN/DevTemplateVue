@@ -77,60 +77,73 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
-import { useStore } from 'vuex'
-import { locale, langOption, changeLangAndReload } from './locale'
-import { useI18n } from 'vue-i18n'
-import { useRoute, useRouter } from 'vue-router'
-import { signOutAPI } from './api/user'
+import { computed, onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
+import { locale, langOption, changeLangAndReload } from './locale';
+import { useI18n } from 'vue-i18n';
+import { useRoute, useRouter } from 'vue-router';
+import { signOutAPI } from './api/user';
+import Aegis from 'aegis-web-sdk';
+import { getRUMConfigAPI } from './api/trace';
 
 // locale
-const i18n = useI18n()
+const i18n = useI18n();
 
 // title
-const title = ref(i18n.t('OVINCCN'))
-document.title = title.value
+const title = ref(i18n.t('OVINCCN'));
+document.title = title.value;
 
 // menu
 const menu = ref([
   {
     key: 'Home',
     name: i18n.t('Home'),
-    path_match: '/'
-  }
-])
-const route = useRoute()
-const router = useRouter()
-const currentMenuItem = ref(menu.value[0].key)
+    path_match: '/',
+  },
+]);
+const route = useRoute();
+const router = useRouter();
+const currentMenuItem = ref(menu.value[0].key);
 const goTo = (key) => {
-  router.push({name: key})
-}
+  router.push({ name: key });
+};
 menu.value.forEach((item, index) => {
-  if (index === 0) return
-  if (window.location.pathname.startsWith(item.path_match)) currentMenuItem.value = item.key
-})
+  if (index === 0) return;
+  if (window.location.pathname.startsWith(item.path_match)) currentMenuItem.value = item.key;
+});
 
 // footer
-const currentYear = ref(new Date().getFullYear())
+const currentYear = ref(new Date().getFullYear());
 
 // store
-const store = useStore()
-const mainLoading = computed(() => store.state.mainLoading)
-store.dispatch('getUserInfo')
+const store = useStore();
+const mainLoading = computed(() => store.state.mainLoading);
+store.dispatch('getUserInfo');
 
 // user
 const userDropDown = ref([
   {
     name: i18n.t('Logout'),
-    value: 'logout'
-  }
-])
-const user = computed(() => store.state.user)
+    value: 'logout',
+  },
+]);
+const user = computed(() => store.state.user);
 const handlerUserDropDown = (key) => {
   if (key === 'logout') {
-    signOutAPI().finally(() => window.location.reload())
+    signOutAPI().finally(() => window.location.reload());
   }
-}
+};
+
+// aegis
+const initRUM = () => {
+  getRUMConfigAPI()
+    .then((res) => {
+      if (res.data.id) {
+        new Aegis(res.data);
+      }
+    });
+};
+onMounted(() => initRUM());
 </script>
 
 <style>

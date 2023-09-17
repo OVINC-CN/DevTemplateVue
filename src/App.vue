@@ -41,12 +41,22 @@
                   </a-doption>
                 </template>
               </a-dropdown>
-              <a-dropdown @select="handlerUserDropDown">
+              <a-dropdown
+                @select="handlerUserDropDown"
+              >
                 <a-button
                   type="text"
                   style="padding: 0; color: unset"
                 >
-                  {{ user.nick_name }}
+                  <a-badge
+                    status="success"
+                    dot
+                    :count="1"
+                    v-if="user.username"
+                  >
+                    <icon-user />
+                  </a-badge>
+                  <icon-user v-else />
                 </a-button>
                 <template #content>
                   <a-doption
@@ -120,16 +130,29 @@ const mainLoading = computed(() => store.state.mainLoading);
 store.dispatch('getUserInfo');
 
 // user
-const userDropDown = ref([
-  {
-    name: i18n.t('Logout'),
-    value: 'logout',
-  },
-]);
 const user = computed(() => store.state.user);
+const userDropDown = computed(() => {
+  if (user.value.username) {
+    return [
+      {
+        name: `${i18n.t('Logout')} (${user.value.nick_name})`,
+        value: 'logout',
+      },
+    ];
+  }
+  return [
+    {
+      name: i18n.t('Login'),
+      value: 'login',
+    },
+  ];
+});
 const handlerUserDropDown = (key) => {
   if (key === 'logout') {
     signOutAPI().finally(() => window.location.reload());
+  }
+  if (key === 'login') {
+    redirectToLogin();
   }
 };
 

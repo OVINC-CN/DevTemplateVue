@@ -5,6 +5,7 @@ const mZhCN = {
   loading: '加载中...',
   VerifyingUserInfo: '登录中',
   Logout: '登出',
+  Login: '登录',
 };
 
 export default mZhCN;

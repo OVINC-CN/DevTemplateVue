@@ -5,6 +5,7 @@ const mEnUS = {
   loading: 'Loading...',
   VerifyingUserInfo: 'Verifying...',
   Logout: 'Logout',
+  Login: 'Login',
 };
 
 export default mEnUS;

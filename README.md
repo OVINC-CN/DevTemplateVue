@@ -4,6 +4,20 @@ Vue3 Template for OVINC Services
 
 ## Quick Start
 
+### 1. Install `cruft`
+
+```bash
+$ pip install cruft
+```
+
+### 2. Initial Project
+
+```bash
+$ cruft create https://github.com/OVINC-CN/DevTemplateVue.git --checkout main
+```
+
+### 3. Prepare Env
+
 ```bash
 $ export HOST=
 $ export BACKEND_URL=

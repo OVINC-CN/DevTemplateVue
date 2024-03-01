@@ -1,6 +1,7 @@
 {
     "project_name": "project",
     "_copy_without_render": [
-        ".github"
+        ".github",
+        "src"
     ]
 }

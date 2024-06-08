@@ -17,11 +17,7 @@ export default defineConfig({
   publicDir: 'public',
   server: {
     host: process.env.HOST,
-    port: 8081,
-    https: {
-      key: './.certs/key',
-      cert: './.certs/pem',
-    },
+    port: 8080,
   },
   css: {
     preprocessorOptions:

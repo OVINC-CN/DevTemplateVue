@@ -95,6 +95,7 @@ import {useRouter} from 'vue-router';
 import {signOutAPI} from './api/user';
 import Aegis from 'aegis-web-sdk';
 import {getRUMConfigAPI} from './api/trace';
+import {redirectToLogin} from './utils/login.js';
 
 // locale
 const i18n = useI18n();
